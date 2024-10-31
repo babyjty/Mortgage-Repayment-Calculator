@@ -47,6 +47,7 @@ for i in range(1, number_of_payments + 1):
     interest_payment = remaining_balance * monthly_interest_rate
     principal_payment = monthly_payment - interest_payment
     remaining_balance -= principal_payment
+    penalty = remaining_balance * 0.015
     year = math.ceil(i/12)
     schedule.append(
         [
@@ -55,7 +56,8 @@ for i in range(1, number_of_payments + 1):
             monthly_payment,
             principal_payment,
             interest_payment,
-            remaining_balance
+            remaining_balance,
+            penalty
         ]
     )
 
@@ -74,7 +76,7 @@ col4.metric(label="Interest (24 Months)", value=f"${total_interest_24:,.0f}")
 df = pd.DataFrame(
     schedule,
     columns=["Year", "Month", "Payment ($)", "Principal ($)",
-             "Interest ($)", "Remaining Balance ($)"]
+             "Interest ($)", "Remaining Balance ($)", "Penalty ($)"]
 )
 
 # Round specific columns
@@ -83,14 +85,21 @@ df["Principal ($)"] = df["Principal ($)"].round(0)      # 2 decimal places
 df["Interest ($)"] = df["Interest ($)"].round(0)        # 1 decimal place
 df["Remaining Balance ($)"] = df["Remaining Balance ($)"].round(
     0)  # 2 decimal places
+df["Penalty ($)"] = df["Penalty ($)"].round(0)  # 2 decimal places
 
-st.write("### Loan Balance")
+
+st.write("### Outstanding Loan")
 payments_df = df[["Year", "Remaining Balance ($)"]].groupby("Year").min()
-st.line_chart(payments_df)
+st.line_chart(data=payments_df,
+              x_label="Year",
+              y_label="Outstanding Balance")
 
 st.write("### Monthly Payment Breakdown")
 monthly_payment_df = df[["Year", "Principal ($)",
                          "Interest ($)"]].groupby("Year").min()
-st.bar_chart(monthly_payment_df)
+st.bar_chart(monthly_payment_df,
+             x_label="Year",
+             y_label="Breakdown")
 
+st.write("### Monthly Payment Schedule")
 st.dataframe(df, use_container_width=True, hide_index=True)
