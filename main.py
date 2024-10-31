@@ -16,11 +16,13 @@ loan_value = col1.number_input(
 interest_rate = col2.number_input(
     "Interest (%)",
     min_value=1.0,
+    value=2.5,
     step=0.05,
 )
 loan_term = col3.number_input(
     "Term (Years)",
     min_value=5,
+    value=25,
     max_value=35
 )
 
