@@ -11,6 +11,7 @@ col1, col2, col3 = st.columns(3)
 loan_value = col1.number_input(
     "Loan Value ($)",
     min_value=100000,
+    value=300000,
     step=500,
 )
 interest_rate = col2.number_input(
