@@ -47,12 +47,12 @@ for i in range(1, number_of_payments + 1):
     year = math.ceil(i/12)
     schedule.append(
         [
+            year,
             i,
             monthly_payment,
             principal_payment,
             interest_payment,
-            remaining_balance,
-            year
+            remaining_balance
         ]
     )
 
@@ -70,15 +70,24 @@ col4.metric(label="Interest (24 Months)", value=f"${total_interest_24:,.0f}")
 
 df = pd.DataFrame(
     schedule,
-    columns=["Month", "Payment", "Principal",
-             "Interest", "Remaining Balance", "Year"]
+    columns=["Year", "Month", "Payment ($)", "Principal ($)",
+             "Interest ($)", "Remaining Balance ($)"]
 )
 
+# Round specific columns
+df["Payment ($)"] = df["Payment ($)"].round(0)          # 2 decimal places
+df["Principal ($)"] = df["Principal ($)"].round(0)      # 2 decimal places
+df["Interest ($)"] = df["Interest ($)"].round(0)        # 1 decimal place
+df["Remaining Balance ($)"] = df["Remaining Balance ($)"].round(
+    0)  # 2 decimal places
+
 st.write("### Loan Balance")
-payments_df = df[["Year", "Remaining Balance"]].groupby("Year").min()
+payments_df = df[["Year", "Remaining Balance ($)"]].groupby("Year").min()
 st.line_chart(payments_df)
 
 st.write("### Monthly Payment Breakdown")
-monthly_payment_df = df[["Year", "Principal",
-                         "Interest"]].groupby("Year").min()
+monthly_payment_df = df[["Year", "Principal ($)",
+                         "Interest ($)"]].groupby("Year").min()
 st.bar_chart(monthly_payment_df)
+
+st.dataframe(df, use_container_width=True, hide_index=True)
