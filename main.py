@@ -3,7 +3,7 @@ import math
 import pandas as pd
 
 # Page title
-st.title("Mortgage Repayment Calculator")
+st.title("📝 Mortgage Repayment Calculator")
 st.divider()
 
 # Input section
@@ -20,6 +20,7 @@ loan_term = col3.number_input(
 st.markdown(
     f"You are borrowing :blue[${loan_value:,.0f}] at an interest rate of :blue[{interest_rate:.2f}%] for a term of :blue[{loan_term}] years."
 )
+
 st.divider()
 
 # Calculations
