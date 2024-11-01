@@ -68,9 +68,9 @@ for i in range(1, number_of_payments + 1):
 
 st.write("### Repayment")
 col1, col2, col3, col4 = st.columns(4)
-col1.metric(label="Monthly", value=f"${monthly_payment:,.2f}")
-col2.metric(label="Total", value=f"${total_payments:,.0f}")
-col3.metric(label="Interest", value=f"${total_interest:,.0f}")
+col1.metric(label="Monthly Payment", value=f"${monthly_payment:,.2f}")
+col2.metric(label="Total Payment", value=f"${total_payments:,.0f}")
+col3.metric(label="Interest (Lifetime)", value=f"${total_interest:,.0f}")
 col4.metric(label="Interest (24 Months)", value=f"${total_interest_24:,.0f}")
 
 df = pd.DataFrame(
